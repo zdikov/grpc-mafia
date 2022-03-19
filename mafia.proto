@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+enum EventType {
+  RESPONSE = 0;
+  JOIN = 1;
+  LEAVE = 2;
+}
+
+message JoinRequest {
+  string username = 1;
+}
+
+message JoinResponse {
+  string message = 1;
+}
+
+message LeaveRequest {
+  string username = 1;
+}
+
+message LeaveResponse {}
+
+message Event {
+  EventType type = 1;
+  oneof event {
+    string username = 2;
+    JoinResponse response = 3;
+  }
+}
+
+service Mafia {
+  rpc Join(JoinRequest) returns (stream Event) {}
+  rpc Leave(LeaveRequest) returns (LeaveResponse) {}
+}
